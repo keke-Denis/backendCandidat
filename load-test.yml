@@ -1,0 +1,25 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 30
+      arrivalRate: 500
+  defaults:
+    headers:
+      Authorization: "Bearer CHANGE_ME"
+      Content-Type: "application/json"
+
+scenarios:
+  - name: "create-candidate"
+    flow:
+      - post:
+          url: "/api/candidates"
+          json:
+            nom: "Rakoto"
+            prenom: "Aina"
+            email: "candidate-{{ $randomString() }}@example.com"
+            telephone: "+261 34 12 345 67"
+            poste: "Backend Developer"
+            annee_experience: 4
+            competence:
+              - "Node.js"
+              - "TypeScript"

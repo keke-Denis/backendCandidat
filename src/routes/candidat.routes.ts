@@ -1,0 +1,36 @@
+import { Router } from 'express';
+import * as ctrl from '../controllers/candidat.controller';
+import { authentifierJWT } from '../middlewares/auth.middleware';
+import { prepareCandidateBody } from '../middlewares/prepare-candidate-body.middleware';
+import { uploadCandidateFile } from '../middlewares/upload.middleware';
+import { validateBody } from '../middlewares/validate.middleware';
+import { asyncHandler } from '../utils/async-handler';
+import {
+  createCandidateSchema,
+  updateCandidateSchema
+} from '../validations/candidat.validation';
+
+const router = Router();
+
+router.use(authentifierJWT);
+
+router.get('/', asyncHandler(ctrl.listerCandidats));
+router.post(
+  '/',
+  uploadCandidateFile,
+  prepareCandidateBody,
+  validateBody(createCandidateSchema),
+  asyncHandler(ctrl.creerCandidat)
+);
+router.get('/:id', asyncHandler(ctrl.recupererCandidat));
+router.put(
+  '/:id',
+  uploadCandidateFile,
+  prepareCandidateBody,
+  validateBody(updateCandidateSchema),
+  asyncHandler(ctrl.mettreAJourPartiel)
+);
+router.delete('/:id', asyncHandler(ctrl.suppressionDouce));
+router.post('/:id/validate', asyncHandler(ctrl.validerCandidat));
+
+export default router;

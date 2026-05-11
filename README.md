@@ -135,7 +135,7 @@ Content-Type :
 application/json
 ```
 
-### 3. Liste Des Candidats
+### 3. Liste Des Candidat
 
 ```http
 GET /api/candidates

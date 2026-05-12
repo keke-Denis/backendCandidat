@@ -9,7 +9,7 @@ const envSchema = z.object({
   MONGO_URI: z.string().min(1, 'MONGO_URI est requis'),
   JWT_SECRET: z.string().min(10, 'JWT_SECRET doit contenir au moins 10 caracteres'),
   JWT_EXPIRES_IN: z.string().default('1h'),
-  AUTH_USERNAME: z.string().default('admin'),
+  AUTH_USERNAME: z.string().default('admin@gmail.com'),
   AUTH_PASSWORD: z.string().default('admin123'),
   RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(15 * 60 * 1000),
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(100)

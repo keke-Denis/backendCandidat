@@ -32,5 +32,6 @@ router.put(
 );
 router.delete('/:id', asyncHandler(ctrl.suppressionDouce));
 router.post('/:id/validate', asyncHandler(ctrl.validerCandidat));
+router.post('/:id/reject', asyncHandler(ctrl.refuserCandidat));
 
 export default router;

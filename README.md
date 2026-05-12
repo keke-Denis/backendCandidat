@@ -37,6 +37,73 @@ Base URL complete pour les routes metier :
 http://localhost:3000/api
 ```
 
+## Tests
+
+- **Backend** : tests avec Jest
+- **Couverture attendue** : 100 % sur les services et les modèles
+- Tests d'intégration : Supertest sur tous les endpoints avec une base MongoDB réelle en mémoire (`mongodb-memory-server`)
+- Exécution : `npm test`
+- Tests unitaires : `npm run test:unit`
+- Tests d'intégration : `npm run test:integration`
+
+## Tests de charge
+
+- Outil : Artillery
+- Scénario : `load-test.yml`
+- Objectif : simuler 500 requêtes par seconde sur `POST /api/candidates`
+- Pré requis :
+  - backend démarré (`npm run dev` ou `npm start`)
+  - récupérer un token JWT via `POST /api/auth/login`
+  - remplacer `Authorization: Bearer CHANGE_ME` par ce token dans `load-test.yml`
+
+### Récupérer le token avec ReqStudio
+
+1. Ouvre l'extension ReqStudio dans VS Code.
+2. Crée une requête `POST http://localhost:3000/api/auth/login`.
+3. Utilise le body JSON :
+
+```json
+{
+  "username": "admin",
+  "password": "admin123"
+}
+```
+
+4. Envoie la requête et copie le JWT renvoyé dans la réponse.
+5. Colle-le dans `load-test.yml` :
+
+```yaml
+defaults:
+  headers:
+    Authorization: "Bearer <TON_TOKEN_Ici>"
+```
+
+Commandes recommandées :
+
+```bash
+# installer les dépendances si nécessaire
+npm install
+
+# démarrer le backend dans un autre terminal
+npm run dev
+
+# exécuter le test de charge localement
+npm run load:test
+
+# générer un rapport lisible
+npx artillery@2.0.21 report load-test-report.json
+
+#Pour ouvrir le resultat du rapport du test
+xdg-open load-test-report.json.html
+```
+
+Le rapport contient :
+
+- temps de réponse moyen, p90, p99
+- taux d'erreur et erreurs HTTP
+- débit réel
+- temps de réponse par phase
+
 ## Entite Candidat
 
 Structure retournee par l'API pour un candidat :

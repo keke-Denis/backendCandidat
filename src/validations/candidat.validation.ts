@@ -61,6 +61,9 @@ export const createCandidateSchema = z.object({
 
 export const updateCandidateSchema = createCandidateSchema
   .partial()
+  .extend({
+    statut: z.enum(['pending', 'interviewed', 'hired', 'rejected']).optional()
+  })
   .refine((payload) => Object.keys(payload).length > 0, {
     message: 'Au moins un champ doit etre fourni pour la mise a jour'
   });
@@ -68,7 +71,7 @@ export const updateCandidateSchema = createCandidateSchema
 export const listCandidatesQuerySchema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(10),
-  statut: z.enum(['valide', 'non_valide']).optional(),
+  statut: z.enum(['pending', 'interviewed', 'hired', 'rejected']).optional(),
   search: z.string().trim().optional()
 });
 

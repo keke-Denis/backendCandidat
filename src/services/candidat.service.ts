@@ -56,10 +56,10 @@ export const getCandidateById = async (id: string) => {
 export const updateCandidatePartially = async (id: string, payload: UpdateCandidatInput) => {
   const candidate = await CandidatModel.findOneAndUpdate(
     findCandidateFilter(id),
-    payload,
+    { $set: payload },
     {
       returnDocument: 'after',
-      runValidators: true
+      runValidators: false
     }
   );
 
@@ -89,7 +89,21 @@ export const validateCandidateAsync = async (id: string) => {
 
   const candidate = await CandidatModel.findOneAndUpdate(
     findCandidateFilter(id),
-    { statut: 'valide' },
+    { statut: 'interviewed' },
+    { returnDocument: 'after', runValidators: true }
+  );
+
+  if (!candidate) {
+    throw new ApiError(404, 'Candidat introuvable');
+  }
+
+  return candidate;
+};
+
+export const rejectCandidate = async (id: string) => {
+  const candidate = await CandidatModel.findOneAndUpdate(
+    findCandidateFilter(id),
+    { statut: 'rejected' },
     { returnDocument: 'after', runValidators: true }
   );
 

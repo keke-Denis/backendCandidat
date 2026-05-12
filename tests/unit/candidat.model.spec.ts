@@ -23,7 +23,7 @@ describe('candidat.model', () => {
   it('applique les valeurs par defaut', async () => {
     const candidat = await CandidatModel.create(buildCandidatePayload());
 
-    expect(candidat.statut).toBe('non_valide');
+    expect(candidat.statut).toBe('pending');
     expect(candidat.est_supprime).toBe(false);
   });
 

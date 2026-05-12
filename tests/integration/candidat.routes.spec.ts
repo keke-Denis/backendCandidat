@@ -142,8 +142,23 @@ describe('candidate routes', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Candidat valide avec succes');
-    expect(response.body.data.statut).toBe('valide');
+    expect(response.body.data.statut).toBe('interviewed');
   }, 30000);
+
+  it('refuse un candidat', async () => {
+    const created = await request(app)
+      .post('/api/candidates')
+      .set(authHeader)
+      .send(buildCandidatePayload());
+
+    const response = await request(app)
+      .post(`/api/candidates/${created.body.data.id}/reject`)
+      .set(authHeader);
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe('Candidat refuse avec succes');
+    expect(response.body.data.statut).toBe('rejected');
+  });
 
   it('authentifie un utilisateur', async () => {
     const response = await request(app).post('/api/auth/login').send({

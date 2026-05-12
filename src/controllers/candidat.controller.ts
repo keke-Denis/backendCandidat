@@ -4,6 +4,7 @@ import {
   createCandidate,
   getCandidateById,
   listCandidates,
+  rejectCandidate,
   softDeleteCandidate,
   updateCandidatePartially,
   validateCandidateAsync
@@ -41,10 +42,12 @@ export const recupererCandidat = async (req: Request, res: Response): Promise<vo
 };
 
 export const mettreAJourPartiel = async (req: Request, res: Response): Promise<void> => {
-  const candidat = await updateCandidatePartially(getRouteId(req.params.id), req.body);
+  const id = getRouteId(req.params.id);
+  logger.info({ id, body: req.body }, 'Mise a jour candidat');
+  const candidat = await updateCandidatePartially(id, req.body);
   logger.info(
-    { candidateId: candidat.id, user: req.user?.username },
-    'Candidat mis a jour'
+    { candidateId: candidat.id, statut: candidat.statut, user: req.user?.username },
+    'Candidat mis a jour avec succes'
   );
   res.status(200).json({
     message: 'Candidat mis a jour avec succes',
@@ -69,6 +72,18 @@ export const validerCandidat = async (req: Request, res: Response): Promise<void
   );
   res.status(200).json({
     message: 'Candidat valide avec succes',
+    data: candidat
+  });
+};
+
+export const refuserCandidat = async (req: Request, res: Response): Promise<void> => {
+  const candidat = await rejectCandidate(getRouteId(req.params.id));
+  logger.info(
+    { candidateId: candidat.id, user: req.user?.username },
+    'Candidat refuse avec succes'
+  );
+  res.status(200).json({
+    message: 'Candidat refuse avec succes',
     data: candidat
   });
 };

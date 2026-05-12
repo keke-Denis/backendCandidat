@@ -12,6 +12,7 @@ import {
   createCandidate,
   getCandidateById,
   listCandidates,
+  rejectCandidate,
   softDeleteCandidate,
   updateCandidatePartially,
   validateCandidateAsync
@@ -44,7 +45,7 @@ describe('candidat.service', () => {
     expect(candidat.id).toBe(1);
     expect(serialized._id).toBeUndefined();
     expect(candidat.nom).toBe('Rakoto');
-    expect(candidat.statut).toBe('non_valide');
+    expect(candidat.statut).toBe('pending');
   });
 
   it('retourne un candidat par id', async () => {
@@ -87,8 +88,16 @@ describe('candidat.service', () => {
 
     const validated = await validateCandidateAsync(String(created.id));
 
-    expect(validated.statut).toBe('valide');
+    expect(validated.statut).toBe('interviewed');
   }, 30000);
+
+  it('refuse un candidat', async () => {
+    const created = await createCandidate(buildCandidatePayload());
+
+    const rejected = await rejectCandidate(String(created.id));
+
+    expect(rejected.statut).toBe('rejected');
+  });
 
   it('liste les candidats avec pagination', async () => {
     await createCandidate(buildCandidatePayload());

@@ -46,8 +46,8 @@ const schemaCandidat = new Schema(
     },
     statut: {
       type: String,
-      enum: ['valide', 'non_valide'],
-      default: 'non_valide'
+      enum: ['pending', 'interviewed', 'hired', 'rejected'],
+      default: 'pending'
     },
     fichier: {
       type: String,

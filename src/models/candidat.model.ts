@@ -1,4 +1,4 @@
-import { HydratedDocument, InferSchemaType, Schema, model } from 'mongoose';
+import mongoose, { HydratedDocument, InferSchemaType, Schema } from 'mongoose';
 
 const schemaCandidat = new Schema(
   {
@@ -81,4 +81,4 @@ schemaCandidat.index({ est_supprime: 1, createdAt: -1 });
 export type Candidat = InferSchemaType<typeof schemaCandidat>;
 export type CandidatDocument = HydratedDocument<Candidat>;
 
-export const CandidatModel = model('Candidat', schemaCandidat);
+export const CandidatModel = mongoose.models.Candidat || mongoose.model('Candidat', schemaCandidat);

@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const counterSchema = new Schema(
   {
@@ -17,4 +17,4 @@ const counterSchema = new Schema(
   }
 );
 
-export const CounterModel = model('Counter', counterSchema);
+export const CounterModel = mongoose.models.Counter || mongoose.model('Counter', counterSchema);

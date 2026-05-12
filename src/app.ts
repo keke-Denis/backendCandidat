@@ -10,7 +10,14 @@ import { apiRateLimiter } from './middlewares/rate-limit.middleware';
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://candidat-frontend.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:3001',
+  ],
+  credentials: true
+}));
 app.use(express.json());
 app.use((req, _res, next) => {
   logger.info(
